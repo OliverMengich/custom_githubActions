@@ -11,6 +11,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Load and Cache Dependencies
         uses: ./.github/actions/cached-deps #we pass a path nowif you published it as a standalone repo, use olivermengich/action1
+        with:
+          caching: 'false' # this disable caching this linting step
       - name: Lint code
         run: npm run lint
   test:
@@ -28,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-report
-          path: test.json
+          path: test.json #files to include
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -53,8 +55,8 @@ jobs:
       - name: Get build artifacts
         uses: actions/download-artifact@v3
         with:
-          name: dist-files
-          path: ./dist
+          name: dist-files #choose the artifacts to download by name
+          path: ./dist #where the artifacts should be downloaded to
       - name: Output contents
         run: ls
       - name: Deploy site
