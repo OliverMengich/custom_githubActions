@@ -10,9 +10,12 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Load and Cache Dependencies
+        id: cache-deps
         uses: ./.github/actions/cached-deps #we pass a path nowif you published it as a standalone repo, use olivermengich/action1
         with:
           caching: 'false' # this disable caching this linting step
+      - name: Output information
+        run: echo "Cache used ? ${{ steps.cache-deps.outputs.used-cache }}"
       - name: Lint code
         run: npm run lint
   test:
