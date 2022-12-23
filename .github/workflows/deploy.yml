@@ -24,12 +24,13 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Load and Cache Dependencies
+        id: Caching_Deps
         uses: ./.github/actions/cached-deps #we pass a path nowif you published it as a standalone repo, use olivermengich/action1
       - name: Test code
         id: run-tests
         run: npm run test
       - name: Upload test report
-        if: failure() && steps.run-tests.outcome == 'failure'
+        if: failure() && steps.Caching_Deps.outcome == 'failure'
         uses: actions/upload-artifact@v3
         with:
           name: test-report
