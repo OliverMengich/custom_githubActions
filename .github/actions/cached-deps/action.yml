@@ -1,20 +1,20 @@
 name: 'Get and Cache Dependencies'
-description: 'Get depencies via npm and cache them.'
+description: 'Get depencies (NPM) and cache them.'
 inputs:
-  #allow uses whether deps should be installed. turn off caching
+  #allow users to control whether deps should be installed. turn off caching
   caching:
-    description: "Whether to cache dependencies or not."
-    required: false
-    default:  'true'
+    description: "Whether to cache dependencies or not." # this description key must be added
+    required: false # whether the input is needed or not.
+    default:  'true' #pass a default value if the input is not passed
 outputs:
   used-cache:
     description: 'Whether the Cache was used.'
     value: ${{ steps.install.outputs.cache }}
 runs:
-  using: 'composite'
+  using: 'composite' #FOR COMPOSITE WORKFLOWS, THIS **MUST** BE DEFINED. This tells github actions its a custom composite action
   steps:
     - name: Cache dependencies
-      if: inputs.caching =='true'
+      if: inputs.caching =='true' # use the same key name when passing the input
       id: cache
       uses: actions/cache@v3
       with:
@@ -25,5 +25,5 @@ runs:
       if: steps.cache.outputs.cache-hit != 'true' || inputs.caching.caching != 'true'
       run: | 
         npm ci
-        echo: "::set-output name=cache::'${{ inputs.caching }}'"
-      shell: bash #shell to be used when executing this step
+        echo: "cache='${{ inputs.caching }}'" >> GITHUB_OUTPUT
+      shell: bash #shell must be specified when you're using the 'run' command to be used when executing this step
