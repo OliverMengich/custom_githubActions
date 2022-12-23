@@ -30,7 +30,7 @@ jobs:
         id: run-tests
         run: npm run test
       - name: Upload test report
-        if: failure() && steps.Caching_Deps.outcome == 'failure'
+        if: failure() && steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v3
         with:
           name: test-report
@@ -66,3 +66,8 @@ jobs:
         run: ls
       - name: Deploy site
         run: echo "Deploying..."
+  information:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run custom action
+        uses: ./.github/actions/deploy-s3-javascript
