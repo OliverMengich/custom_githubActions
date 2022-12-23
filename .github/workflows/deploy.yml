@@ -41,7 +41,8 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Load and Cache Dependencies
-        uses: ./.github/actions/cached-deps #we pass a path nowif you published it as a standalone repo, use olivermengich/action1
+        uses: ./.github/actions/cached-deps #we pass a path now. If you published it as a standalone repo, pass uses: olivermengich/action1
+        #github automatically searches for a .yml file when you pass the path 
       - name: Build website
         run: npm run build
       - name: Upload artifacts
